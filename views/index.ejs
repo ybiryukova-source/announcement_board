@@ -1,0 +1,35 @@
+<h1>Дошка оголошень</h1>
+
+<form method="GET" action="/">
+  <input name="search" placeholder="Шукати оголошення..." value="<%= search %>">
+
+  <select name="sort">
+    <option value="newest" <%= sort === 'newest' ? 'selected' : '' %>>Новіші</option>
+    <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>Старіші</option>
+  </select>
+
+  <button type="submit">Знайти</button>
+</form>
+
+<a href="/announcements">Додати оголошення</a>
+
+<% if (announcements.length === 0) { %>
+  <p>Оголошень не знайдено</p>
+<% } %>
+
+<% announcements.forEach(a => { %>
+  <div>
+    <h3><%= a.title %></h3>
+    <p><%= a.description.substring(0, 100) %>...</p>
+    <p>Ціна: <%= a.price %> грн</p>
+    <a href="/announcements/<%= a.id %>">Детальніше</a>
+  </div>
+<% }) %>
+
+<div>
+  <% for (let i = 1; i <= totalPages; i++) { %>
+    <a href="/?page=<%= i %>&search=<%= search %>&sort=<%= sort %>">
+      <%= i %>
+    </a>
+  <% } %>
+</div>

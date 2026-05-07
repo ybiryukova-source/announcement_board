@@ -1,0 +1,11 @@
+body {
+  font-family: Arial;
+  max-width: 800px;
+  margin: auto;
+}
+
+div {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+}

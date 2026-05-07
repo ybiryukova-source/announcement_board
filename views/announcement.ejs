@@ -1,0 +1,27 @@
+<a href="/">← Назад</a>
+
+<h1><%= announcement.title %></h1>
+
+<p>Категорія: <%= announcement.category %></p>
+<p>Ціна: <%= announcement.price %> грн</p>
+<p><%= announcement.description %></p>
+<p>Контакти: <%= announcement.contactInfo %></p>
+
+<button id="delete-btn">Видалити</button>
+
+<script>
+const btn = document.querySelector('#delete-btn');
+const id = <%= announcement.id %>;
+
+btn.addEventListener('click', async () => {
+  if (!confirm('Ви впевнені що хочете видалити це оголошення?')) return;
+
+  const res = await fetch(`/announcements/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    window.location.href = '/';
+  }
+});
+</script>
