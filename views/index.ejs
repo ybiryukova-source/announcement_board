@@ -1,35 +1,132 @@
-<h1>Дошка оголошень</h1>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Дошка оголошень</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
 
-<form method="GET" action="/">
-  <input name="search" placeholder="Шукати оголошення..." value="<%= search %>">
+<div class="container">
 
-  <select name="sort">
-    <option value="newest" <%= sort === 'newest' ? 'selected' : '' %>>Новіші</option>
-    <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>Старіші</option>
-  </select>
+  <div class="top-bar">
+    <h1>📋 Дошка оголошень</h1>
 
-  <button type="submit">Знайти</button>
-</form>
-
-<a href="/announcements">Додати оголошення</a>
-
-<% if (announcements.length === 0) { %>
-  <p>Оголошень не знайдено</p>
-<% } %>
-
-<% announcements.forEach(a => { %>
-  <div>
-    <h3><%= a.title %></h3>
-    <p><%= a.description.substring(0, 100) %>...</p>
-    <p>Ціна: <%= a.price %> грн</p>
-    <a href="/announcements/<%= a.id %>">Детальніше</a>
-  </div>
-<% }) %>
-
-<div>
-  <% for (let i = 1; i <= totalPages; i++) { %>
-    <a href="/?page=<%= i %>&search=<%= search %>&sort=<%= sort %>">
-      <%= i %>
+    <a class="add-btn" href="/announcements">
+      + Додати оголошення
     </a>
+  </div>
+
+  <form class="search-form" method="GET" action="/">
+    <input
+      type="text"
+      name="search"
+      placeholder="Шукати оголошення..."
+      value="<%= search %>"
+    >
+
+    <select name="sort">
+      <option value="newest"
+        <%= sort === 'newest' ? 'selected' : '' %>>
+        Новіші спочатку
+      </option>
+
+      <option value="oldest"
+        <%= sort === 'oldest' ? 'selected' : '' %>>
+        Старіші спочатку
+      </option>
+    </select>
+
+    <button type="submit">Знайти</button>
+  </form>
+
+  <% if (announcements.length === 0) { %>
+
+    <div class="empty">
+      Оголошень не знайдено
+    </div>
+
   <% } %>
+
+  <div class="cards">
+
+    <% announcements.forEach(a => { %>
+
+      <div class="card">
+
+        <div class="category">
+          <% if (a.category === 'sale') { %>
+            📦 Продаж
+          <% } %>
+
+          <% if (a.category === 'service') { %>
+            🔧 Послуги
+          <% } %>
+
+          <% if (a.category === 'job') { %>
+            💼 Робота
+          <% } %>
+
+          <% if (a.category === 'other') { %>
+            📌 Інше
+          <% } %>
+        </div>
+
+        <h2><%= a.title %></h2>
+
+        <p class="description">
+          <%= a.description.substring(0, 100) %>...
+        </p>
+
+        <div class="card-footer">
+          <span class="price">
+            <%= a.price %> грн
+          </span>
+
+          <a class="details-btn"
+            href="/announcements/<%= a.id %>">
+            Детальніше
+          </a>
+        </div>
+
+      </div>
+
+    <% }) %>
+
+  </div>
+
+  <% if (totalPages > 1) { %>
+
+    <div class="pagination">
+
+      <% if (currentPage > 1) { %>
+        <a href="/?page=<%= currentPage - 1 %>&search=<%= search %>&sort=<%= sort %>">
+          ← Попередня
+        </a>
+      <% } %>
+
+      <% for (let i = 1; i <= totalPages; i++) { %>
+
+        <a
+          class="<%= currentPage === i ? 'active-page' : '' %>"
+          href="/?page=<%= i %>&search=<%= search %>&sort=<%= sort %>"
+        >
+          <%= i %>
+        </a>
+
+      <% } %>
+
+      <% if (currentPage < totalPages) { %>
+        <a href="/?page=<%= currentPage + 1 %>&search=<%= search %>&sort=<%= sort %>">
+          Наступна →
+        </a>
+      <% } %>
+
+    </div>
+
+  <% } %>
+
 </div>
+
+</body>
+</html>

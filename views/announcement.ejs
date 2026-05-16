@@ -1,27 +1,79 @@
-<a href="/">← Назад</a>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title><%= announcement.title %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
 
-<h1><%= announcement.title %></h1>
+<div class="container">
 
-<p>Категорія: <%= announcement.category %></p>
-<p>Ціна: <%= announcement.price %> грн</p>
-<p><%= announcement.description %></p>
-<p>Контакти: <%= announcement.contactInfo %></p>
+  <a class="back-link" href="/">← Назад</a>
 
-<button id="delete-btn">Видалити</button>
+  <div class="single-card">
+
+    <div class="category">
+      <%= announcement.category %>
+    </div>
+
+    <h1><%= announcement.title %></h1>
+
+    <div class="meta">
+      <p><strong>Ціна:</strong> <%= announcement.price %> грн</p>
+
+      <p>
+        <strong>Опубліковано:</strong>
+        <%= new Date(announcement.createdAt).toLocaleDateString('uk-UA') %>
+      </p>
+    </div>
+
+    <div class="full-description">
+      <%= announcement.description %>
+    </div>
+
+    <div class="contacts">
+      <strong>Контакти:</strong>
+      <%= announcement.contactInfo %>
+    </div>
+
+    <button id="delete-btn" class="delete-btn">
+      Видалити
+    </button>
+
+  </div>
+
+</div>
 
 <script>
 const btn = document.querySelector('#delete-btn');
+
 const id = <%= announcement.id %>;
 
 btn.addEventListener('click', async () => {
-  if (!confirm('Ви впевнені що хочете видалити це оголошення?')) return;
 
-  const res = await fetch(`/announcements/${id}`, {
-    method: 'DELETE'
-  });
-
-  if (res.ok) {
-    window.location.href = '/';
+  if (!confirm('Ви впевнені що хочете видалити це оголошення?')) {
+    return;
   }
+
+  try {
+
+    const response = await fetch(`/announcements/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      window.location.href = '/';
+    } else {
+      alert('Помилка при видаленні');
+    }
+
+  } catch (error) {
+    alert('Помилка сервера');
+  }
+
 });
 </script>
+
+</body>
+</html>

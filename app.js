@@ -1,7 +1,5 @@
 import express from 'express';
-import pkg from '@prisma/client';
-
-const { PrismaClient } = pkg;
+import { PrismaClient } from './generated/prisma/index.js';
 
 const app = express();
 const prisma = new PrismaClient();
